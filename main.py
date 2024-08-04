@@ -1,3 +1,10 @@
+import debugpy
+
+debugpy.listen(5678)
+print('Waiting for debugger')
+debugpy.wait_for_client()
+print('Debugger attached')
+
 import glob
 
 import wandb
@@ -34,6 +41,12 @@ if cfg.dataset.name in ["german"]:
     from causal_nf.preparators.german_preparator import GermanPreparator
 
     preparator = GermanPreparator.loader(cfg.dataset)
+
+elif cfg.dataset.name in ["FF_data"]:
+    from causal_nf.preparators.FF_preparator import FFPreparator
+
+    preparator = FFPreparator.loader(cfg.dataset)
+
 elif cfg.dataset.name in ["ihdp"]:
     from causal_nf.preparators.ihdp_preparator import IHDPPreparator
 
