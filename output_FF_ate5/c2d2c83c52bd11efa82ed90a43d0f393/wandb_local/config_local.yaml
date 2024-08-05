@@ -1,5 +1,5 @@
 device: auto
-root_dir: output_FF_ate1000
+root_dir: output_FF_ate5
 seed: 2
 dataset:
   root: ./data

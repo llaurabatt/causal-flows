@@ -1,9 +1,9 @@
-import debugpy
-
-debugpy.listen(5678)
-print('Waiting for debugger')
-debugpy.wait_for_client()
-print('Debugger attached')
+# import debugpy
+#
+# debugpy.listen(5678)
+# print('Waiting for debugger')
+# debugpy.wait_for_client()
+# print('Debugger attached')
 
 import glob
 

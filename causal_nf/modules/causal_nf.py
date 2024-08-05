@@ -136,12 +136,12 @@ class CausalNormalizingFlow(nn.Module):
     def compute_ate(self, index, a, b, num_samples=10000, scaler=None) -> Tensor:
 
         x_int = self.intervene(index, a, shape=(num_samples,), scaler=scaler)
-        x_y = torch.cat((x_int[:, :index], x_int[:, index + 1 :]), dim=-1)
+        x_y = torch.cat((x_int[:, :index], x_int[:, index + 1:]), dim=-1)
 
         mean_a = x_y.mean(0)
 
         x_int = self.intervene(index, b, shape=(num_samples,), scaler=scaler)
-        x_y = torch.cat((x_int[:, :index], x_int[:, index + 1 :]), dim=-1)
+        x_y = torch.cat((x_int[:, :index], x_int[:, index + 1:]), dim=-1)
 
         mean_b = x_y.mean(0)
 
@@ -168,7 +168,7 @@ class CausalNormalizingFlow(nn.Module):
 
         # Get interventional z
         z2 = n_flow.transform(x1)
-        z2[:, index + 1 :] = z1[:, index + 1 :]
+        z2[:, index + 1:] = z1[:, index + 1:]
 
         x2 = n_flow.transform.inv(z2)
 

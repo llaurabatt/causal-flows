@@ -1,7 +1,4 @@
-
 import torch
-import torch.nn.functional as F
-
 from causal_nf.sem_equations.sem_base import SEM
 
 
@@ -32,12 +29,12 @@ class SimpleFrugalModel(SEM):
 
     def adjacency(self, add_diag=False):
         adj = torch.zeros((6, 6))
-        adj[0, :] = torch.tensor([0, 0, 0, 0, 0, 0]) # Z1
-        adj[1, :] = torch.tensor([1, 0, 0, 0, 0, 0]) # Z2
-        adj[2, :] = torch.tensor([1, 1, 0, 0, 0, 0]) # Z3
-        adj[3, :] = torch.tensor([1, 1, 1, 0, 0, 0]) # Z4
-        adj[4, :] = torch.tensor([1, 1, 1, 1, 0, 0]) # X
-        adj[5, :] = torch.tensor([1, 1, 1, 1, 1, 0]) # Y
+        adj[0, :] = torch.tensor([0, 0, 0, 0, 0, 0])  # Z1
+        adj[1, :] = torch.tensor([1, 0, 0, 0, 0, 0])  # Z2
+        adj[2, :] = torch.tensor([1, 1, 0, 0, 0, 0])  # Z3
+        adj[3, :] = torch.tensor([1, 1, 1, 0, 0, 0])  # Z4
+        adj[4, :] = torch.tensor([1, 1, 1, 1, 0, 0])  # X
+        adj[5, :] = torch.tensor([1, 1, 1, 1, 1, 0])  # Y
 
         if add_diag:
             adj += torch.eye(6)
@@ -45,4 +42,4 @@ class SimpleFrugalModel(SEM):
         return adj
 
     def intervention_index_list(self):
-        return [0, 4]
+        return [4]

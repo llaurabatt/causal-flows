@@ -1,17 +1,12 @@
 from causal_nf.datasets.FF_dataset import FFDataset
-from causal_nf.distributions.scm import SCM
-from causal_nf.preparators.scm._base_distributions import pu_dict
 from causal_nf.preparators.tabular_preparator import TabularPreparator
 from causal_nf.sem_equations import sem_dict
-from causal_nf.transforms import CausalEquations
 from causal_nf.utils.io import dict_to_cn
 
 from causal_nf.utils.scalers import StandardTransform
 
-import numpy as np
-
 import networkx as nx
-from torch.distributions import Independent, Normal, Uniform, Laplace
+from torch.distributions import Normal, Independent
 import torch
 
 
@@ -54,25 +49,7 @@ class FFPreparator(TabularPreparator):
         return self.num_nodes
 
     def get_intervention_list(self):
-        # TODO
-        x = self.get_features_train().numpy()
-
-        perc_idx = [25, 50, 75]
-
-        percentiles = np.percentile(x, perc_idx, axis=0)
-        int_list = []
-        for i in self.intervention_index_list:
-            percentiles_i = percentiles[:, i]
-            values_i = []
-            for perc_name, perc_value in zip(perc_idx, percentiles_i):
-                values_i.append({"name": f"{perc_name}p", "value": perc_value})
-
-            for value in values_i:
-                value["value"] = round(value["value"], 2)
-                value["index"] = i
-                int_list.append(value)
-
-        return int_list
+        raise NotImplementedError("FFPreparator.get_intervention_list")
 
     def diameter(self):
         adjacency = self.adjacency(True).numpy()
@@ -87,83 +64,39 @@ class FFPreparator(TabularPreparator):
         return int(longest_path_length)
 
     def get_ate_list(self):
-        # TODO
-        x = self.get_features_train().numpy()
-
-        perc_idx = [25, 50, 75]
-
-        percentiles = np.percentile(x, perc_idx, axis=0)
-        int_list = []
-        for i in self.intervention_index_list:
-            percentiles_i = percentiles[:, i]
-            values_i = []
-            values_i.append(
-                {"name": "25_50", "a": percentiles_i[0], "b": percentiles_i[1]}
-            )
-            values_i.append(
-                {"name": "25_75", "a": percentiles_i[0], "b": percentiles_i[2]}
-            )
-            values_i.append(
-                {"name": "50_75", "a": percentiles_i[1], "b": percentiles_i[2]}
-            )
-            for value in values_i:
-                value["a"] = round(value["a"], 2)
-                value["b"] = round(value["b"], 2)
-                value["index"] = i
-                int_list.append(value)
-
-        return int_list
+        raise NotImplementedError("FFPreparator.get_ate_list")
 
     def get_ate_list_2(self):
-        # TODO
-        x = self.get_features_train()
-
-        x_mean = x.mean(0)
-        x_std = x.std(0)
-        int_list = []
-        for i in self.intervention_index_list:
-            x_mean_i = x_mean[i].item()
-            x_std_i = x_std[i].item()
-            values_i = []
-            values_i.append({"name": "mu_std", "a": x_mean_i, "b": x_mean_i + x_std_i})
-            values_i.append({"name": "mu_-std", "a": x_mean_i, "b": x_mean_i - x_std_i})
-            values_i.append(
-                {"name": "-std_std", "a": x_mean_i - x_std_i, "b": x_mean_i + x_std_i}
-            )
-            for value in values_i:
-                value["a"] = round(value["a"], 2)
-                value["b"] = round(value["b"], 2)
-                value["index"] = i
-                int_list.append(value)
-
-        return int_list
+        raise NotImplementedError("FFPreparator.get_ate_list_2")
 
     def intervene(self, index, value, shape):
-
-        # one can only intervene on train data?
-        x = self.get_features_train()
-                
-        # shape never gets used??
-        if len(shape) == 1:
-            shape = (shape[0], x.shape[1]) #
-
-
-        cond = x[..., index].floor() == int(value)
-        x = x[cond, :]
-
-        return x[: shape[0]]
+        # # one can only intervene on train data?
+        # x = self.get_features_train()
+        #
+        # # shape never gets used??
+        # if len(shape) == 1:
+        #     shape = (shape[0], x.shape[1]) #
+        #
+        #
+        # cond = x[..., index].floor() == int(value)
+        # x = x[cond, :]
+        #
+        # return x[: shape[0]]
+        raise NotImplementedError("FFPreparator.intervene")
 
     def compute_ate(self, index, a, b, num_samples=10000):
         # bug? why is this here?
-        ate = torch.rand((6)) * 2 - 1.0
-        return ate
+        # ate = torch.rand((6)) * 2 - 1.0
+        # return ate
+        raise NotImplementedError("FFPreparator.compute_ate")
 
     def compute_counterfactual(self, x_factual, index, value):
-
-        x_cf = torch.randn_like(x_factual)
-        x_cf[:, index] = value
-
-        return x_cf
+        #
+        # x_cf = torch.randn_like(x_factual)
+        # x_cf[:, index] = value
+        #
+        # return x_cf
+        raise NotImplementedError("FFPreparator.compute_counterfactual")
 
     def log_prob(self, x):
         px = Independent(
@@ -190,7 +123,6 @@ class FFPreparator(TabularPreparator):
             )
 
             dataset.prepare_data()
-            dataset.set_add_noise(self.add_noise)
             if i == 0:
                 self.dataset = dataset
             datasets.append(dataset)
@@ -201,7 +133,6 @@ class FFPreparator(TabularPreparator):
         raise NotImplementedError
 
     def get_scaler(self, fit=True):
-
         scaler = self._get_scaler()
         self.scaler_transform = None
         if fit:
@@ -214,7 +145,6 @@ class FFPreparator(TabularPreparator):
                 print("scaler_transform", self.scaler_transform)
 
         self.scaler = scaler
-
         return scaler
 
     def get_scaler_info(self):
