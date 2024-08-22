@@ -4,6 +4,7 @@ seed: 1
 param_count: 0
 dataset:
   root: ../Data
+  dataset_filename: ate_1_version0.csv
   name: chain
   sem_name: linear # non-linear #non-additive
   splits: [ 0.8,0.2 ]

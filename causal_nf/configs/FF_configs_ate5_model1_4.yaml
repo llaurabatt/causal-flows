@@ -1,9 +1,9 @@
 device: auto
-root_dir: output_FF_ate1/model1/v0
+root_dir: output_FF_ate5/model_1/v_4
 seed: 2
 dataset:
-  root: ./data
-  dataset_filename: ate_1_version0.csv
+  root: ./data/sim_data_ate_5/model_1
+  dataset_filename: ate_5_version4.csv
   name: FF_data
   sem_name: dummy # non-linear #non-additive
   splits: [ 0.8,0.1, 0.1 ]

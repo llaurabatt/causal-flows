@@ -11,9 +11,10 @@ import torch
 
 
 class FFPreparator(TabularPreparator):
-    def __init__(self, add_noise, **kwargs):
+    def __init__(self, add_noise, dataset_filename, **kwargs):
 
         self.dataset = None
+        self.dataset_filename = dataset_filename
         self.add_noise = add_noise
         sem_fn = sem_dict["FF_data"](sem_name="dummy")
 
@@ -33,6 +34,7 @@ class FFPreparator(TabularPreparator):
 
         my_dict = {
             "add_noise": dataset.add_noise,
+            "dataset_filename": dataset.dataset_filename,
         }
 
         my_dict.update(TabularPreparator.params(dataset))
@@ -119,7 +121,10 @@ class FFPreparator(TabularPreparator):
 
         for i, split_s in enumerate(self.split):
             dataset = FFDataset(
-                root_dir=self.root, split=self.split_names[i], seed=self.k_fold
+                root_dir=self.root, 
+                split=self.split_names[i], 
+                seed=self.k_fold,
+                dataset_filename=self.dataset_filename,
             )
 
             dataset.prepare_data()

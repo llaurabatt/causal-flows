@@ -37,8 +37,12 @@ def compute_split_idx(original_len, split_sizes, k_fold=None):
 
 # %%
 class FFDataset(Dataset):
-    def __init__(self, root_dir: str, split: str, seed: int = None):
+    def __init__(self, root_dir: str, 
+                 split: str, 
+                 dataset_filename: str, 
+                 seed: int = None):
         self.root_dir = root_dir
+        self.dataset_filename = dataset_filename
 
         self.seed = seed
         self.split = split
@@ -51,9 +55,9 @@ class FFDataset(Dataset):
             "X",
             "Y",
         ]
-        self.binary_dims = [4]
-        self.binary_min_values = torch.tensor([0.0])
-        self.binary_max_values = torch.tensor([1.0])
+        self.binary_dims = [2,3,4]
+        self.binary_min_values = torch.tensor([0.0,0.0,0.0])
+        self.binary_max_values = torch.tensor([1.0,1.0,1.0])
         self.x = None
         self.y = None
         self._add_noise = False
@@ -67,7 +71,8 @@ class FFDataset(Dataset):
         Returns: None
 
         """
-        data_df = pd.read_csv(os.path.join(self.root_dir, "ate_1000.csv"))[self.column_names]
+        # data_df = pd.read_csv(os.path.join(self.root_dir, "ate_1_version0.csv"))[self.column_names]
+        data_df = pd.read_csv(os.path.join(self.root_dir, self.dataset_filename))[self.column_names] 
         data = torch.from_numpy(data_df.values).float()
 
         num_samples = data.shape[0]
