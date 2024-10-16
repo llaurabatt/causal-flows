@@ -1,0 +1,132 @@
+dataset:
+  add_noise: false
+  base_version: 1
+  k_fold: 1
+  loss: default
+  name: simpson
+  num_samples: 25000
+  root: ../Data
+  scale: default
+  sem_name: non-linear
+  shuffle_train: true
+  single_split: false
+  splits:
+  - 0.8
+  - 0.1
+  - 0.1
+  type: torch
+  use_edge_attr: false
+device: auto
+early_stopping:
+  activate: false
+  min_delta: 0.0
+  patience: 3
+  verbose: false
+gnn:
+  aggregators:
+  - sum
+  - mean
+  - min
+  - max
+  - std
+  dim_inner: 64
+  eps: 0.0
+  heads: 1
+  num_layers: 1
+  num_layers_post: 1
+  num_layers_pre: 1
+  post_layers: 1
+  pre_layers: 1
+  scalers:
+  - identity
+  - amplification
+  - attenuation
+  - linear
+  - inverse_linear
+  stage_type: skipsum
+  towers: 1
+  train_eps: false
+gnn2:
+  aggregators:
+  - sum
+  - mean
+  - min
+  - max
+  - std
+  dim_inner: 64
+  eps: 0.0
+  heads: 1
+  num_layers: 1
+  num_layers_post: 1
+  num_layers_pre: 1
+  post_layers: 1
+  pre_layers: 1
+  scalers:
+  - identity
+  - amplification
+  - attenuation
+  - linear
+  - inverse_linear
+  stage_type: skipsum
+  towers: 1
+  train_eps: false
+model:
+  act: elu
+  adjacency: false
+  base_distr: normal
+  base_to_data: false
+  beta: 1.0
+  dim_inner:
+  - 32
+  - 32
+  - 32
+  distr_u: laplace
+  distr_x: normal
+  dropout: 0.0
+  has_bn: false
+  init: null
+  lambda_: 0.01
+  latent_dim: 4
+  layer_name: maf
+  learn_base: false
+  name: causal_nf
+  net_name: mlp
+  num_layers: 1
+  objective: elbo
+  parity: false
+  plot: false
+  scale: false
+  scale_base: false
+  shift_base: false
+optim:
+  base_lr: 0.001
+  beta_1: 0.9
+  beta_2: 0.999
+  cooldown: 0
+  factor: 0.95
+  gamma: 0.99
+  mode: min
+  momentum: 0.0
+  optimizer: adam
+  patience: 60
+  scheduler: plateau
+  step_size: 100
+  weight_decay: 0.0
+param_count: 2536
+root_dir: output_FF
+seed: 2
+train:
+  auto_lr_find: false
+  auto_scale_batch_size: false
+  batch_size: 4096
+  enable_progress_bar: true
+  inference_mode: false
+  kl: forward
+  limit_train_batches: null
+  limit_val_batches: null
+  max_epochs: 1000
+  max_time: 00:01:00:00
+  model_checkpoint: true
+  num_workers: 0
+  profiler: null
+  regularize: false

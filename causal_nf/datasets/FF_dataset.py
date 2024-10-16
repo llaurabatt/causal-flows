@@ -90,7 +90,7 @@ class FFDataset(Dataset):
         else:
             raise NotImplementedError(f"Split {self.split} not implemented")
 
-        y = torch.from_numpy(data_df['Y'].values).float()  # data[:, -1]
+        y = data[:,self.column_names.index('Y')]  # data[:, -1]
         x = data
         return x, y
 
@@ -106,15 +106,22 @@ class FFDataset(Dataset):
             x_tmp = x.clone()
         else:
             x_tmp = self.x.clone()
-
+        
         if scaler:
-            x = scaler.transform(x_tmp)
-        else:
-            x = x_tmp
-        return x, self.y
+            nonbinary_dims = [i for i in range(x_tmp.shape[1]) if i not in self.binary_dims]
+            binary_features = x_tmp[:, self.binary_dims]
+            nonbinary_features = x_tmp[:, nonbinary_dims]
+            scaled_nonbinary_features = scaler.transform(nonbinary_features)
+
+            x_tmp[:, nonbinary_dims] = scaled_nonbinary_features
+
+        return x_tmp, self.y
 
     def __getitem__(self, index):
-        x = self.x[index].clone()
+        x = self.x[index].clone()        
+        if self._add_noise:
+            x[..., self.binary_dims] += torch.rand_like(x[..., self.binary_dims])
+
         return x, self.y[index]
 
     def __len__(self):

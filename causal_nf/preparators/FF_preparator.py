@@ -128,6 +128,7 @@ class FFPreparator(TabularPreparator):
             )
 
             dataset.prepare_data()
+            dataset.set_add_noise(self.add_noise)
             if i == 0:
                 self.dataset = dataset
             datasets.append(dataset)
