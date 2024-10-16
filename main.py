@@ -126,49 +126,49 @@ if isinstance(preparator.single_split, str):
 
 model.save_dir = dirpath
 
-if load_model:
-    ckpt_name_list = glob.glob(os.path.join(args.load_model, f"*ckpt"))
-    for ckpt_file in ckpt_name_list:
-        model = causal_nf_train.load_model(
-            cfg=cfg, preparator=preparator, ckpt_file=ckpt_file
-        )
-        model.eval()
-        model.save_dir = dirpath
-        ckpt_name = preparator.get_ckpt_name(ckpt_file)
-        for i, loader_i in enumerate(loaders):
-            s_name = preparator.split_names[i]
-            causal_nf_io.print_info(f"Testing {s_name} split")
-            preparator.set_current_split(i)
-            model.ckpt_name = ckpt_name
-            _ = trainer.test(model=model, dataloaders=loader_i)
-            metrics_stats = model.metrics_stats
-            metrics_stats["current_epoch"] = trainer.current_epoch
-            wandb_local.log_v2(
-                {s_name: metrics_stats, "epoch": ckpt_name},
-                root=trainer.logger.save_dir,
-            )
+# if load_model:
+#     ckpt_name_list = glob.glob(os.path.join(args.load_model, f"*ckpt"))
+#     for ckpt_file in ckpt_name_list:
+#         model = causal_nf_train.load_model(
+#             cfg=cfg, preparator=preparator, ckpt_file=ckpt_file
+#         )
+#         model.eval()
+#         model.save_dir = dirpath
+#         ckpt_name = preparator.get_ckpt_name(ckpt_file)
+#         for i, loader_i in enumerate(loaders):
+#             s_name = preparator.split_names[i]
+#             causal_nf_io.print_info(f"Testing {s_name} split")
+#             preparator.set_current_split(i)
+#             model.ckpt_name = ckpt_name
+#             _ = trainer.test(model=model, dataloaders=loader_i)
+#             metrics_stats = model.metrics_stats
+#             metrics_stats["current_epoch"] = trainer.current_epoch
+#             wandb_local.log_v2(
+#                 {s_name: metrics_stats, "epoch": ckpt_name},
+#                 root=trainer.logger.save_dir,
+#             )
 
 
-else:
+# else:
 
-    ckpt_name_list = ["last"]
-    if cfg.early_stopping.activate:
-        ckpt_name_list.append("best")
-    for ckpt_name in ckpt_name_list:
-        for i, loader_i in enumerate(loaders):
-            s_name = preparator.split_names[i]
-            causal_nf_io.print_info(f"Testing {s_name} split")
-            preparator.set_current_split(i)
-            model.ckpt_name = ckpt_name
-            _ = trainer.test(ckpt_path=ckpt_name, dataloaders=loader_i)
-            metrics_stats = model.metrics_stats
-            metrics_stats["current_epoch"] = trainer.current_epoch
+#     ckpt_name_list = ["last"]
+#     if cfg.early_stopping.activate:
+#         ckpt_name_list.append("best")
+#     for ckpt_name in ckpt_name_list:
+#         for i, loader_i in enumerate(loaders):
+#             s_name = preparator.split_names[i]
+#             causal_nf_io.print_info(f"Testing {s_name} split")
+#             preparator.set_current_split(i)
+#             model.ckpt_name = ckpt_name
+#             _ = trainer.test(ckpt_path=ckpt_name, dataloaders=loader_i)
+#             metrics_stats = model.metrics_stats
+#             metrics_stats["current_epoch"] = trainer.current_epoch
 
-            wandb_local.log_v2(
-                {s_name: metrics_stats, "epoch": ckpt_name},
-                root=trainer.logger.save_dir,
-            )
-
+#             wandb_local.log_v2(
+#                 {s_name: metrics_stats, "epoch": ckpt_name},
+#                 root=trainer.logger.save_dir,
+#             )
+if not load_model:
     run.finish()
     if args.delete_ckpt:
         for f in glob.iglob(os.path.join(logger.save_dir, "*.ckpt")):
