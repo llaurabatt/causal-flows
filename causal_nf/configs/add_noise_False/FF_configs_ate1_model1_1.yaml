@@ -1,9 +1,9 @@
 device: auto
-root_dir: output_fake/model_1/v_0
+root_dir: output_FF_ate1_anFalse/model_1/v_1
 seed: 2
 dataset:
   root: ./data/sim_data_ate_1/model_1
-  dataset_filename: ate_1_version0.csv
+  dataset_filename: ate_1_version1.csv
   name: FF_data_M1
   sem_name: dummy # non-linear #non-additive
   splits: [ 0.8,0.1, 0.1 ]
@@ -11,8 +11,8 @@ dataset:
   shuffle_train: True #?
   loss: default
   scale: default
-  add_noise: True
-  num_samples: 25000
+  add_noise: False
+  # num_samples: 5000
   # base_version: 1
 model:
   name: causal_nf
@@ -27,7 +27,7 @@ model:
   # learn_base: False
   plot: False
 train:
-  max_epochs: 10
+  max_epochs: 1000
   regularize: False
   kl: forward  # backward
   batch_size: 10000 #4096

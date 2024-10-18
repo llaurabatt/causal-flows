@@ -8,7 +8,9 @@ from .diamond import Diamond
 from .simpson import Simpson
 from .large_backdoor import LargeBackdoor
 from .german_credit import GermanCredit
-from .FF_equations import SimpleFrugalModel
+from .FF_equations_M1 import SimpleFrugalModelM1
+from .FF_equations_M2 import SimpleFrugalModelM2
+from .FF_equations_M3 import SimpleFrugalModelM3
 
 sem_dict = {}
 
@@ -22,4 +24,6 @@ sem_dict["diamond"] = Diamond
 sem_dict["simpson"] = Simpson
 sem_dict["large-backdoor"] = LargeBackdoor
 sem_dict["german"] = GermanCredit
-sem_dict["FF_data"] = SimpleFrugalModel
+sem_dict["FF_data_M1"] = SimpleFrugalModelM1
+sem_dict["FF_data_M2"] = SimpleFrugalModelM2
+sem_dict["FF_data_M3"] = SimpleFrugalModelM3

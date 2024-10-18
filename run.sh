@@ -1,12 +1,19 @@
 #!/bin/bash
 
 # List of configuration files to use
-CONFIG_FILES=(
-    # "causal_nf/configs/FF_configs_ate1_model1_0.yaml"
-    "causal_nf/configs/fake2.yaml"
-    # "causal_nf/configs/causal_nf3.yaml"
-    # Add more config files here
-)
+# CONFIG_FILES=(
+#     "causal_nf/configs/FF_configs_ate1_model3_0.yaml"
+#     # "causal_nf/configs/causal_nf3.yaml"
+#     # Add more config files here
+# )
+
+for ATE in 1 5; do
+    for MODEL in 3; do
+        for VERSION in 2 3 4; do
+            CONFIG_FILES+=("causal_nf/configs/add_noise_False/FF_configs_ate${ATE}_model${MODEL}_${VERSION}.yaml")
+        done
+    done
+done
 
 # Wandb mode and project name
 WANDB_MODE="disabled"
