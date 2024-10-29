@@ -1,6 +1,6 @@
 ## Fork of Causal normalizing flows for Frugal Flow comparisons
 
-In this fork of the Causal Normalizing Flow repository we perform the experiments for comparing performance in ATE inference with Frugal Flows, as part of the paper *Marginal Causal Flows for Inference and Validation*, submitted to NeurIPS 2024. For more information check the [official repository of Frugal Flows]([https://github.com/llaurabatt/causal-flows.git](https://github.com/llaurabatt/frugal-flows.git))
+In this fork of the Causal Normalizing Flow repository we perform the experiments for comparing performance in ATE inference with Frugal Flows, as part of the paper *Marginal Causal Flows for Inference and Validation*, submitted to NeurIPS 2024. For more information check the [official repository of Frugal Flows](https://github.com/llaurabatt/frugal-flows.git).
 
 To recover Causal Flows ATE values reported in Table 1 of *Marginal Causal Flows for Inference and Validation*:
 * Build your environment from the ```environment.yaml``` file
