@@ -1,15 +1,8 @@
 #!/bin/bash
 
-# List of configuration files to use
-# CONFIG_FILES=(
-#     "causal_nf/configs/FF_configs_ate1_model3_0.yaml"
-#     # "causal_nf/configs/causal_nf3.yaml"
-#     # Add more config files here
-# )
-
 for ATE in 1 5; do
-    for MODEL in 3; do
-        for VERSION in 2 3 4; do
+    for MODEL in 1 2; do
+        for VERSION in 0 1 2 3 4; do
             CONFIG_FILES+=("causal_nf/configs/add_noise_False/FF_configs_ate${ATE}_model${MODEL}_${VERSION}.yaml")
         done
     done
